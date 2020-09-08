@@ -257,18 +257,16 @@ public:
                David Clarke, Appendix A.2 (A26) */
             F = mueller::reverse(F);
 
-            /* The Stokes reference frame vector of this matrix lies in the plane
-               of reflection. */
+            /* The Stokes reference frame vector of this matrix lies perpendicular
+               to the plane of reflection. */
             Vector3f s_axis_in = normalize(cross(m, -wi_hat)),
-                     p_axis_in = normalize(cross(-wi_hat, s_axis_in)),
-                     s_axis_out = normalize(cross(m, wo_hat)),
-                     p_axis_out = normalize(cross(wo_hat, s_axis_out));
+                     s_axis_out = normalize(cross(m, wo_hat));
 
             /* Rotate in/out reference vector of F s.t. it aligns with the implicit
                Stokes bases of -wi_hat & wo_hat. */
             F = mueller::rotate_mueller_basis(F,
-                                              -wi_hat, p_axis_in, mueller::stokes_basis(-wi_hat),
-                                               wo_hat, p_axis_out, mueller::stokes_basis(wo_hat));
+                                              -wi_hat, s_axis_in, mueller::stokes_basis(-wi_hat),
+                                               wo_hat, s_axis_out, mueller::stokes_basis(wo_hat));
         } else {
             F = fresnel_conductor(UnpolarizedSpectrum(dot(si.wi, m)), eta_c);
         }
@@ -333,18 +331,16 @@ public:
                David Clarke, Appendix A.2 (A26) */
             F = mueller::reverse(F);
 
-            /* The Stokes reference frame vector of this matrix lies in the plane
-               of reflection. */
+            /* The Stokes reference frame vector of this matrix lies perpendicular
+               to the plane of reflection. */
             Vector3f s_axis_in  = normalize(cross(H, -wi_hat)),
-                     p_axis_in  = normalize(cross(-wi_hat, s_axis_in)),
-                     s_axis_out = normalize(cross(H, wo_hat)),
-                     p_axis_out = normalize(cross(wo_hat, s_axis_out));
+                     s_axis_out = normalize(cross(H, wo_hat));
 
             /* Rotate in/out reference vector of F s.t. it aligns with the implicit
                Stokes bases of -wi_hat & wo_hat. */
             F = mueller::rotate_mueller_basis(F,
-                                              -wi_hat, p_axis_in, mueller::stokes_basis(-wi_hat),
-                                               wo_hat, p_axis_out, mueller::stokes_basis(wo_hat));
+                                              -wi_hat, s_axis_in, mueller::stokes_basis(-wi_hat),
+                                               wo_hat, s_axis_out, mueller::stokes_basis(wo_hat));
         } else {
             F = fresnel_conductor(UnpolarizedSpectrum(dot(si.wi, H)), eta_c);
         }

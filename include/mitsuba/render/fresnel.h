@@ -224,8 +224,12 @@ fresnel_polarized(Float cos_theta_i, Float eta) {
  */
 template <typename Float>
 std::tuple<Complex<Float>, Complex<Float>, Float, Complex<Float>, Complex<Float>>
-fresnel_polarized(Float cos_theta_i, Complex<Float> eta) {
+fresnel_polarized(Float cos_theta_i, Complex<Float> eta_) {
     auto outside_mask = cos_theta_i >= 0.f;
+
+    /* Polarized Fresnel equations here assume that 'kappa' is negative, which
+       is flipped from the usual convention used by Mitsuba. */
+    Complex<Float> eta = enoki::conj(eta_);
 
     Complex<Float> rcp_eta = rcp(eta),
                    eta_it  = select(outside_mask, eta, rcp_eta),
